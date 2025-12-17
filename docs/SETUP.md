@@ -75,3 +75,15 @@ tio <device_port>
 ```
 
 ## Editor Configuration
+
+## 5. Git Hooks
+
+This project uses `cargo-husky` to manage git hooks. The hooks are defined in `.cargo-husky/hooks/` and are automatically installed into your local `.git/hooks/` directory when you run tests.
+
+To ensure your hooks are set up (e.g., `pre-push` checks), run:
+
+```bash
+cargo test
+```
+
+This will compile the test harness and install the hooks. The `pre-push` hook ensures that formatting, clippy checks, and tests pass before allowing a push.

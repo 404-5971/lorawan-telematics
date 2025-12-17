@@ -62,35 +62,20 @@ pub fn get_lat_lon(
                     if char == '\n' {
                         let line = sentence_accumulator.trim();
 
-                        // DEBUG: Print raw output to verify hardware is talking
-                        // info!("GNSS Raw: {}", line);
-
-                        // Parse the complete line
                         match nmea.parse(line) {
                             Ok(_) => {
-                                // Check if we have a valid fix (lat/lon not None)
                                 if let (Some(lat), Some(lon)) = (nmea.latitude, nmea.longitude) {
-                                    info!("Fix Acquired: {}, {}", lat, lon);
-
-                                    // Cleanup
                                     drop(gps_power);
-                                    let power_pin = power_pin;
                                     return Ok((Some((lat, lon)), power_pin));
                                 }
                             }
-                            Err(_e) => {
-                                // Checksum errors are common on startup, ignore them
-                            }
+                            Err(_e) => {}
                         }
-
-                        // Clear buffer for next sentence
                         sentence_accumulator.clear();
                     }
                 }
             }
             _ => {
-                // Short sleep to yield to RTOS
-                // info!("I'm running");
                 FreeRtos::delay_ms(10);
             }
         }
@@ -98,6 +83,5 @@ pub fn get_lat_lon(
 
     info!("GPS Timeout");
     drop(gps_power);
-    let power_pin = power_pin;
     Ok((None, power_pin))
 }

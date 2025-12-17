@@ -45,6 +45,4 @@ fn main() -> Result<(), Box<dyn Error>> {
     info!("Deep sleeping now...");
     // 3. Prepare for sleep
     enter_deep_sleep(gpio3, pins.gpio2)
-
-    // Everything after this point it unreachable because enter_deep_sleep resets the device
 }
